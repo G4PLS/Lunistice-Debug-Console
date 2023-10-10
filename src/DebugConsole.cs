@@ -3,15 +3,16 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System;
 
+/*
 namespace Lunistice_DebugConsole
 {
     public class DebugConsole : MonoBehaviour
     {
         public enum Tab { Player, Level, Game, Teleport }
-        public enum Character { Hana, Toree, Toukie }
+        public enum PlayerCharacter { Hana, Toree, Toukie }
         public Rect WindowRect { get; private set; } = new Rect(20, 20, 500, 500);
-        public Tab currentTab { get; private set; } = Tab.Game;
-        public Character character { get; private set; }
+        public Tab CurrentTab { get; private set; } = Tab.Game;
+        public PlayerCharacter Character { get; private set; }
         public static bool ShowDebugGUI { get; private set; } = false;
         public GUIStyle NormalLabel { get; private set; }
         public GUIStyle ChangedLabel { get; private set; }
@@ -19,7 +20,7 @@ namespace Lunistice_DebugConsole
         public static Timer GameTimer { get; private set; }
         public static LevelSelectMenu GameLevelSelectMenu { get; private set; }
         public static BeatManager GameBeatManager { get; private set; }
-        public List<(Vector3, int)> teleportPoints { get; private set; } = new List<(Vector3, int)>();
+        public List<(Vector3, int)> TeleportPoints { get; private set; } = new List<(Vector3, int)>();
 
         private void Update()
         {
@@ -34,8 +35,8 @@ namespace Lunistice_DebugConsole
                 GameLevelSelectMenu.StartLevel(GameManager.Instance.currentLevel);
             else if (Input.GetKeyDown(KeyCode.T))
                 AddTeleportPoint(GameManager.Instance?.playerRef);
-            else if (Input.GetKeyDown(KeyCode.G) && teleportPoints.Count > 0)
-                TeleportTo(GameManager.Instance.playerRef, teleportPoints[^1].Item1);
+            else if (Input.GetKeyDown(KeyCode.G) && TeleportPoints.Count > 0)
+                TeleportTo(GameManager.Instance.playerRef, TeleportPoints[^1].Item1);
 
             if (!GameManager.Instance.IsPaused() && !ShowDebugGUI)
             {
@@ -65,7 +66,7 @@ namespace Lunistice_DebugConsole
             ChangedLabel.fontSize = 15;
             ChangedLabel.fontStyle = FontStyle.Bold;
 
-            WindowRect = GUI.Window(0, WindowRect, (GUI.WindowFunction)CreateWindow, $"Debug Console by {Plugin.AUTHOR}", WindowStyle);
+            WindowRect = GUI.Window(0, WindowRect, (GUI.WindowFunction)CreateWindow, $"Debug Console by {Plugin.Author}", WindowStyle);
         }
 
         private void CreateWindow(int windowID)
@@ -73,17 +74,17 @@ namespace Lunistice_DebugConsole
             GUI.DragWindow(new Rect(0, 0, Screen.width, 20));
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Toggle(currentTab == Tab.Game, "Game", "Button"))
-                currentTab = Tab.Game;
-            if (GUILayout.Toggle(currentTab == Tab.Level, "Level", "Button"))
-                currentTab = Tab.Level;
-            if (GUILayout.Toggle(currentTab == Tab.Player, "Player", "Button"))
-                currentTab = Tab.Player;
-            if (GUILayout.Toggle(currentTab == Tab.Teleport, "Teleport", "Button"))
-                currentTab = Tab.Teleport;
+            if (GUILayout.Toggle(CurrentTab == Tab.Game, "Game", "Button"))
+                CurrentTab = Tab.Game;
+            if (GUILayout.Toggle(CurrentTab == Tab.Level, "Level", "Button"))
+                CurrentTab = Tab.Level;
+            if (GUILayout.Toggle(CurrentTab == Tab.Player, "Player", "Button"))
+                CurrentTab = Tab.Player;
+            if (GUILayout.Toggle(CurrentTab == Tab.Teleport, "Teleport", "Button"))
+                CurrentTab = Tab.Teleport;
             GUILayout.EndHorizontal();
 
-            switch (currentTab)
+            switch (CurrentTab)
             {
                 case Tab.Game:
                     GameTab();
@@ -178,24 +179,24 @@ namespace Lunistice_DebugConsole
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Toggle(character == Character.Hana, "Hana", "Button"))
-                character = Character.Hana;
-            if (GUILayout.Toggle(character == Character.Toree, "Toree", "Button"))
-                character = Character.Toree;
-            if (GUILayout.Toggle(character == Character.Toukie, "Toukie", "Button"))
-                character = Character.Toukie;
+            if (GUILayout.Toggle(Character == PlayerCharacter.Hana, "Hana", "Button"))
+                Character = PlayerCharacter.Hana;
+            if (GUILayout.Toggle(Character == PlayerCharacter.Toree, "Toree", "Button"))
+                Character = PlayerCharacter.Toree;
+            if (GUILayout.Toggle(Character == PlayerCharacter.Toukie, "Toukie", "Button"))
+                Character = PlayerCharacter.Toukie;
             GUILayout.EndHorizontal();
 
             // MAKE PLUGIN STATS VISIBLE PER CHARACTER
-            switch (character)
+            switch (Character)
             {
-                case Character.Hana:
+                case PlayerCharacter.Hana:
                     CreateHanaConfigSliders();
                     break;
-                case Character.Toree:
+                case PlayerCharacter.Toree:
                     CreateToreeConfigSliders();
                     break;
-                case Character.Toukie:
+                case PlayerCharacter.Toukie:
                     CreateToukieConfigSliders();
                     break;
             }
@@ -218,15 +219,15 @@ namespace Lunistice_DebugConsole
             if (GUILayout.Button("Add Teleport Point"))
                 AddTeleportPoint(player);
 
-            for (int i = 0; i < teleportPoints.Count; i++)
+            for (int i = 0; i < TeleportPoints.Count; i++)
             {
                 GUILayout.BeginHorizontal();
 
-                GUILayout.Label(LevelIDToString(teleportPoints[i].Item2) + teleportPoints[i].Item1.ToString(), NormalLabel);
+                GUILayout.Label(LevelIDToString(TeleportPoints[i].Item2) + TeleportPoints[i].Item1.ToString(), NormalLabel);
                 if (GUILayout.Button("Teleport"))
-                    TeleportTo(player, teleportPoints[i].Item1);
+                    TeleportTo(player, TeleportPoints[i].Item1);
                 if (GUILayout.Button("Delete"))
-                    teleportPoints.RemoveAt(i);
+                    TeleportPoints.RemoveAt(i);
 
                 GUILayout.EndHorizontal();
             }
@@ -237,7 +238,7 @@ namespace Lunistice_DebugConsole
         private void AddTeleportPoint(Bun.PlayerController player)
         {
             if (player == null) return;
-            teleportPoints.Add((player.transform.position, GameManager.Instance.currentLevel));
+            TeleportPoints.Add((player.transform.position, GameManager.Instance.currentLevel));
         }
 
         private void TeleportTo(Bun.PlayerController player, Vector3 point)
@@ -403,11 +404,11 @@ namespace Lunistice_DebugConsole
 
         [HarmonyPatch(typeof(Timer), "Awake")]
         [HarmonyPostfix]
-        private static void GetTimer(Timer __instance) => GameTimer = __instance;
+        private static void GetTimer(Timer instance) => GameTimer = instance;
 
         [HarmonyPatch(typeof(UIController), "Start")]
         [HarmonyPostfix]
-        private static void GetLevelSelectMenu(UIController __instance) => GameLevelSelectMenu = __instance.levelSelectMenu;
+        private static void GetLevelSelectMenu(UIController instance) => GameLevelSelectMenu = instance.levelSelectMenu;
 
         [HarmonyPatch(typeof(Bun.PlayerController), "Start")]
         [HarmonyPostfix]
@@ -419,9 +420,10 @@ namespace Lunistice_DebugConsole
 
         [HarmonyPatch(typeof(BeatManager), "Start")]
         [HarmonyPostfix]
-        private static void ApplyTimeScale(BeatManager __instance)
+        private static void ApplyTimeScale(BeatManager instance)
         {
-            __instance.beatLength = (int)(__instance.beatLength / Time.timeScale);
+            instance.beatLength = (int)(instance.beatLength / Time.timeScale);
         }
     }
 }
+*/
