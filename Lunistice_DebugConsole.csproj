@@ -84,6 +84,9 @@
     <Reference Include="JBooth.MicroSplat.Core">
       <HintPath>D:\Steam\steamapps\common\Lunistice\BepInEx\interop\JBooth.MicroSplat.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Luna">
+      <HintPath>..\..\Project_Luna\bin\Debug\net6.0\Luna.dll</HintPath>
+    </Reference>
     <Reference Include="MeshBakerCore">
       <HintPath>D:\Steam\steamapps\common\Lunistice\BepInEx\interop\MeshBakerCore.dll</HintPath>
     </Reference>
@@ -366,5 +369,12 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>D:\Steam\steamapps\common\Lunistice\BepInEx\interop\UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="UniverseLib.IL2CPP.Interop">
+      <HintPath>UniverseLib.IL2CPP.Interop.dll</HintPath>
+    </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(OutDir)Lunistice_DebugConsole.dll&quot; &quot;D:\steam\steamapps\common\Lunistice\BepInEx\plugins&quot;" />
+  </Target>
 </Project>

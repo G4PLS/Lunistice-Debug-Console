@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using BepInEx.Configuration;
-using Project_Luna;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UniverseLib;
 using UniverseLib.UI;
@@ -10,11 +7,11 @@ using UniverseLib.Utility;
 
 namespace Lunistice_DebugConsole.UI;
 
-public class PlayerStatsUI : TabPageUI
+public class PlayerStatsTab : TabPage
 {
-    private Timer.Character _character;
+    private readonly Timer.Character _character;
     
-    public PlayerStatsUI(GameObject parent, Timer.Character character) : base(parent)
+    public PlayerStatsTab(GameObject parent, Timer.Character character) : base(parent)
     {
         _character = character;
     }
@@ -32,6 +29,7 @@ public class PlayerStatsUI : TabPageUI
                 CreateInputField(_uiRoot, "HanaSprintSpeed", "Input Value", Plugin.HanaSprintSpeed);
                 CreateInputField(_uiRoot, "HanaRunSpeed", "Input Value", Plugin.HanaRunSpeed);
                 CreateInputField(_uiRoot, "HanaTurboSpeed", "Input Value", Plugin.HanaTurboSpeed);
+                CreateInputField(_uiRoot, "HanaJumpHeight", "Input Value", Plugin.HanaJumpHeight);
                 CreateInputField(_uiRoot, "HanaAttackJump", "Input Value", Plugin.HanaAttackJump);
                 CreateInputField(_uiRoot, "HanaMaxDoubleJumps", "Input Value", Plugin.HanaMaxDoubleJumps);
                 CreateInputField(_uiRoot, "HanaCoyoteTime", "Input Value", Plugin.HanaCoyoteTime);
@@ -44,6 +42,7 @@ public class PlayerStatsUI : TabPageUI
                 CreateInputField(_uiRoot, "ToreeSprintSpeed", "Input Value", Plugin.ToreeSprintSpeed);
                 CreateInputField(_uiRoot, "ToreeRunSpeed", "Input Value", Plugin.ToreeRunSpeed);
                 CreateInputField(_uiRoot, "ToreeTurboSpeed", "Input Value", Plugin.ToreeTurboSpeed);
+                CreateInputField(_uiRoot, "ToreeJumpHeight", "Input Value", Plugin.ToreeJumpHeight);
                 CreateInputField(_uiRoot, "ToreeAttackJump", "Input Value", Plugin.ToreeAttackJump);
                 CreateInputField(_uiRoot, "ToreeMaxDoubleJumps", "Input Value", Plugin.ToreeMaxDoubleJumps);
                 CreateInputField(_uiRoot, "ToreeCoyoteTime", "Input Value", Plugin.ToreeCoyoteTime);
@@ -56,6 +55,7 @@ public class PlayerStatsUI : TabPageUI
                 CreateInputField(_uiRoot, "ToukieSprintSpeed", "Input Value", Plugin.ToukieSprintSpeed);
                 CreateInputField(_uiRoot, "ToukieRunSpeed", "Input Value", Plugin.ToukieRunSpeed);
                 CreateInputField(_uiRoot, "ToukieTurboSpeed", "Input Value", Plugin.ToukieTurboSpeed);
+                CreateInputField(_uiRoot, "ToukieJumpHeight", "Input Value", Plugin.ToukieJumpHeight);
                 CreateInputField(_uiRoot, "ToukieAttackJump", "Input Value", Plugin.ToukieAttackJump);
                 CreateInputField(_uiRoot, "ToukieMaxDoubleJumps", "Input Value", Plugin.ToukieMaxDoubleJumps);
                 CreateInputField(_uiRoot, "ToukieCoyoteTime", "Input Value", Plugin.ToukieCoyoteTime);
@@ -64,9 +64,13 @@ public class PlayerStatsUI : TabPageUI
                 CreateInputField(_uiRoot, "ToukieAcceleration", "Input Value", Plugin.ToukieAcceleration);
                 break;
         }
+
+        var reset = UIFactory.CreateButton(_uiRoot, "Reset", "Reset All");
+        UIFactory.SetLayoutElement(reset.GameObject, minHeight: 20);
+        reset.OnClick += ResetAll;
     }
     
-    public InputFieldRef CreateInputField<T>(GameObject parent, string name, string placeHolder,
+    private InputFieldRef CreateInputField<T>(GameObject parent, string name, string placeHolder,
         ConfigWrapper<T> config)
     {
         var group = UIFactory.CreateHorizontalGroup(parent, $"{name}__HorizontalGroup", true, false, true, true, 4);
@@ -78,6 +82,7 @@ public class PlayerStatsUI : TabPageUI
         
         input.Text = config.GetBoxedValue().ToString();
         
+        
         input.Component.GetOnEndEdit().AddListener(value =>
         {
             var configType = config.GetSettingType();
@@ -87,18 +92,65 @@ public class PlayerStatsUI : TabPageUI
                 config.SetBoxedValue(@float);
             else if (configType == typeof(string))
                 config.SetBoxedValue(value);
-
-            input.Text = config.GetBoxedValue().ToString();
-            displayText.text = $"{config.GetDefinition().Key}: {config.GetBoxedValue()}";
         });
 
         defaultButton.OnClick += () =>
         {
             config.SetBoxedValue(config.GetDefaultValue());
-            input.Text = config.GetDefaultValue().ToString();
-            displayText.text = $"{config.GetDefinition().Key}: {config.GetBoxedValue()}";
+        };
+        
+        config.OnBoxedValueChange += val =>
+        {
+            input.Text = val.ToString();
+            displayText.text = $"{config.GetDefinition().Key}: {val}";
         };
     
         return input;
+    }
+
+    private void ResetAll()
+    {
+        switch (_character)
+        {
+            case Timer.Character.Hana:
+                Plugin.HanaMaxLife.ResetValue();
+                Plugin.HanaSprintSpeed.ResetValue();
+                Plugin.HanaRunSpeed.ResetValue();
+                Plugin.HanaTurboSpeed.ResetValue();
+                Plugin.HanaJumpHeight.ResetValue();
+                Plugin.HanaAttackJump.ResetValue();
+                Plugin.HanaMaxDoubleJumps.ResetValue();
+                Plugin.HanaCoyoteTime.ResetValue();
+                Plugin.HanaFriction.ResetValue();
+                Plugin.HanaAirFriction.ResetValue();
+                Plugin.HanaAcceleration.ResetValue();
+                break;
+            case Timer.Character.Toree:
+                Plugin.ToreeMaxLife.ResetValue();
+                Plugin.ToreeSprintSpeed.ResetValue();
+                Plugin.ToreeRunSpeed.ResetValue();
+                Plugin.ToreeTurboSpeed.ResetValue();
+                Plugin.ToreeJumpHeight.ResetValue();
+                Plugin.ToreeAttackJump.ResetValue();
+                Plugin.ToreeMaxDoubleJumps.ResetValue();
+                Plugin.ToreeCoyoteTime.ResetValue();
+                Plugin.ToreeFriction.ResetValue();
+                Plugin.ToreeAirFriction.ResetValue();
+                Plugin.ToreeAcceleration.ResetValue();
+                break;
+            case Timer.Character.Toukie:
+                Plugin.ToukieMaxLife.ResetValue();
+                Plugin.ToukieSprintSpeed.ResetValue();
+                Plugin.ToukieRunSpeed.ResetValue();
+                Plugin.ToukieTurboSpeed.ResetValue();
+                Plugin.ToukieJumpHeight.ResetValue();
+                Plugin.ToukieAttackJump.ResetValue();
+                Plugin.ToukieMaxDoubleJumps.ResetValue();
+                Plugin.ToukieCoyoteTime.ResetValue();
+                Plugin.ToukieFriction.ResetValue();
+                Plugin.ToukieAirFriction.ResetValue();
+                Plugin.ToukieAcceleration.ResetValue();
+                break;
+        }
     }
 }

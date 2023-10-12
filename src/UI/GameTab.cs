@@ -1,5 +1,4 @@
-﻿using BepInEx.Configuration;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UniverseLib;
 using UniverseLib.UI;
@@ -8,9 +7,9 @@ using UniverseLib.Utility;
 
 namespace Lunistice_DebugConsole.UI;
 
-public class GameTabUI : TabPageUI
+public class GameTab : TabPage
 {
-    public GameTabUI(GameObject parent) : base(parent)
+    public GameTab(GameObject parent) : base(parent)
     {
     }
 

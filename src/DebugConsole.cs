@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using HarmonyLib;
-using System.Collections.Generic;
-using System;
+﻿
 
 /*
 namespace Lunistice_DebugConsole

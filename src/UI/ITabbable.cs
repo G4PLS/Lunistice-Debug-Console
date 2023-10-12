@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UniverseLib.UI;
-using UniverseLib.UI.Models;
+﻿using UnityEngine;
 
 namespace Lunistice_DebugConsole.UI;
 
@@ -11,5 +8,5 @@ public interface ITabbable
 
     protected abstract void DisableTab(int tabIndex);
 
-    protected abstract void AddTab<T>(GameObject tabGroup, string label, object[] args) where T : TabPageUI;
+    protected abstract void AddTab<T>(GameObject tabGroup, string label, object[] args) where T : TabPage;
 }
