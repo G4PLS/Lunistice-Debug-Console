@@ -19,7 +19,7 @@ public class Plugin : BasePlugin
 {
     public const string GUID = "com.GAPLS.Lunistice.DebugConsole";
     public const string Name = "Debug Console";
-    public const string Version = "1.0";
+    public const string Version = "1.5";
     public const string Author = "GAPLS";
 
     public static readonly ConfigFile PluginSettings = new(Path.Combine(Paths.ConfigPath, Name, "Plugin.cfg"), true);
