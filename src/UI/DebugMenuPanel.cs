@@ -49,13 +49,29 @@ namespace Lunistice_DebugConsole.UI
             SetActive(true);
             ConfigManager.Force_Unlock_Mouse = true;
             Game.Pause(true);
+            UiManager.EnableUIInput = false;
         }
 
         public void Hide()
         {
             SetActive(false);
             ConfigManager.Force_Unlock_Mouse = false;
-            Game.Pause(false);
+            UiManager.EnableUIInput = true;
+            
+            switch (UiManager.CurrentUIState)
+            {
+                case UiManager.UIState.Options:
+                case UiManager.UIState.OptionsSubGameplay:
+                case UiManager.UIState.OptionsSubAudio:
+                case UiManager.UIState.OptionsSubCamera:
+                case UiManager.UIState.OptionsSubGraphics:
+                    break; // Do nothing for these UI states
+                default:
+                    if (Game.GameState == GameState.Mission)
+                        UiManager.CurrentUIState = UiManager.UIState.Mission;
+                    Game.Pause(false);
+                    break;
+            }
         }
         
         public void SetTab(int tabIndex)
