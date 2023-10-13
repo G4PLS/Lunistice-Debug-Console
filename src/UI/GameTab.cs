@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Luna;
+using UnityEngine;
 using UnityEngine.UI;
 using UniverseLib;
 using UniverseLib.UI;
@@ -10,13 +11,12 @@ namespace Lunistice_DebugConsole.UI;
 public class GameTab : TabPage
 {
     public GameTab(GameObject parent) : base(parent)
-    {
-    }
+    {}
 
     public override void ConstructUI(GameObject parent)
     {
         _uiRoot = UIFactory.CreateUIObject("GameTab", parent);
-        UIFactory.SetLayoutGroup<VerticalLayoutGroup>(_uiRoot, true, false, true, true);
+        UIFactory.SetLayoutGroup<VerticalLayoutGroup>(_uiRoot, true, false, true, true, padBottom: 10);
         UIFactory.SetLayoutElement(_uiRoot, minHeight:25);
 
         CreateInputField(_uiRoot, "TimeScale", "Value", Plugin.TimeScale);
