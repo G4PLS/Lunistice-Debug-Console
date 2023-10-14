@@ -65,7 +65,7 @@ public class PlayerStatsTab : TabPage
                 break;
         }
 
-        var reset = UIFactory.CreateButton(_uiRoot, "Reset", "Reset All");
+        var reset = UIFactory.CreateButton(_uiRoot, "Reset", "Reset All", normalColor: null);
         UIFactory.SetLayoutElement(reset.GameObject, minHeight: 20);
         reset.OnClick += ResetAll;
     }
@@ -77,7 +77,7 @@ public class PlayerStatsTab : TabPage
         
         var displayText = UIFactory.CreateLabel(group, $"{name}__Label", $"{config.GetDefinition().Key}: {config.GetBoxedValue()}");
         var input = UIFactory.CreateInputField(group, $"{name}__InputField", placeHolder);
-        var defaultButton = UIFactory.CreateButton(group, $"{name}__Button", "Default");
+        var defaultButton = UIFactory.CreateButton(group, $"{name}__Button", "Default", normalColor: null);
         UIFactory.SetLayoutElement(defaultButton.GameObject, minHeight: 20);
         
         input.Text = config.GetBoxedValue().ToString();

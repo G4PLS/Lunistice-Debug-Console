@@ -73,7 +73,7 @@ public class PlayerTab : TabPage, ITabbable
         tab.ConstructUI(_uiRoot);
         _tabPages.Add(tab);
 
-        var button = UIFactory.CreateButton(tabGroup, $"{label}__Button", label);
+        var button = UIFactory.CreateButton(tabGroup, $"{label}__Button", label, normalColor: null);
         var id = _tabButtons.Count;
             
         button.OnClick += () => { SetTab(id); };

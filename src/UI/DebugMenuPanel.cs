@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Luna;
 using UnityEngine;
+using UnityEngine.UI;
 using UniverseLib;
 using UniverseLib.Config;
 using UniverseLib.UI;
@@ -27,6 +28,15 @@ namespace Lunistice_DebugConsole.UI
         {
             Player.OnPlayerLoaded += OnPlayerLoad;
         }
+
+        public override void ConstructUI()
+        {
+            base.ConstructUI();
+
+            uiRoot.GetComponent<Image>().color = new(0f,0f,0f,0f);
+            ContentRoot.GetComponent<Image>().color = new(0.185f, 0.192f, 0.211f, 1f);
+        }
+        
         protected override void ConstructPanelContent()
         {
             GameObject tabGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "TabGroup", true, true, true, true);

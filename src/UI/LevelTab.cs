@@ -21,10 +21,10 @@ public class LevelTab : TabPage
         var quickLevel = UIFactory.CreateHorizontalGroup(_uiRoot, "QuickLevel", true, true, true, true);
         UIFactory.SetLayoutElement(quickLevel, minHeight: 25, flexibleHeight: 0);
         
-        var btnMain = UIFactory.CreateButton(quickLevel, "MainMenuBtn", "Main Menu");
-        var btnRestart = UIFactory.CreateButton(quickLevel, "RestartLevel", "Restart Level");
-        var btnNext = UIFactory.CreateButton(quickLevel, "NextLevel", "Next Level");
-        var btnPrevious = UIFactory.CreateButton(quickLevel, "PreviousLevel", "Previous Level");
+        var btnMain = UIFactory.CreateButton(quickLevel, "MainMenuBtn", "Main Menu", normalColor: null);
+        var btnRestart = UIFactory.CreateButton(quickLevel, "RestartLevel", "Restart Level", normalColor: null);
+        var btnNext = UIFactory.CreateButton(quickLevel, "NextLevel", "Next Level", normalColor: null);
+        var btnPrevious = UIFactory.CreateButton(quickLevel, "PreviousLevel", "Previous Level", normalColor: null);
 
         btnRestart.OnClick = () => LevelLoader.LoadLevel(LevelLoader.GetCurrentLevel());
         btnNext.OnClick = LevelLoader.LoadNextLevel;
@@ -33,8 +33,8 @@ public class LevelTab : TabPage
         var quickTimer = UIFactory.CreateHorizontalGroup(_uiRoot, "QuickTimer", true, true, true, true);
         UIFactory.SetLayoutElement(quickTimer, minHeight: 25, flexibleHeight: 0);
 
-        var btnStart = UIFactory.CreateButton(quickTimer, "StartTimer", "Start Timer");
-        var btnStop = UIFactory.CreateButton(quickTimer, "StopTimer", "Stop Timer");
+        var btnStart = UIFactory.CreateButton(quickTimer, "StartTimer", "Start Timer", normalColor: null);
+        var btnStop = UIFactory.CreateButton(quickTimer, "StopTimer", "Stop Timer", normalColor: null);
 
         btnStart.OnClick += LevelTimer.StartTimer;
         btnStop.OnClick += LevelTimer.StopTimer;
@@ -58,7 +58,7 @@ public class LevelTab : TabPage
                 if (index >= enumValues.Length) continue;
                 
                 var btnLevel = UIFactory.CreateButton(temporaryHorizontalGroup, $"{max}{i}{j}{index}__Button",
-                    enumValues.GetValue(index)?.ToString());
+                    enumValues.GetValue(index)?.ToString(), normalColor: null);
                 btnLevel.OnClick += () =>
                 {
                     LevelLoader.LoadLevel((Level)enumValues.GetValue(index)!);
