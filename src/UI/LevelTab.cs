@@ -26,6 +26,7 @@ public class LevelTab : TabPage
         var btnNext = UIFactory.CreateButton(quickLevel, "NextLevel", "Next Level", normalColor: null);
         var btnPrevious = UIFactory.CreateButton(quickLevel, "PreviousLevel", "Previous Level", normalColor: null);
 
+        btnMain.OnClick = () => Game.CloseResults(false);
         btnRestart.OnClick = () => LevelLoader.LoadLevel(LevelLoader.GetCurrentLevel());
         btnNext.OnClick = LevelLoader.LoadNextLevel;
         btnPrevious.OnClick = LevelLoader.LoadPreviousLevel;

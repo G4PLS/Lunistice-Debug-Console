@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Luna.Config;
+using UnityEngine;
 using UnityEngine.UI;
 using UniverseLib;
 using UniverseLib.UI;
@@ -71,38 +72,35 @@ public class PlayerStatsTab : TabPage
     }
     
     private InputFieldRef CreateInputField<T>(GameObject parent, string name, string placeHolder,
-        ConfigWrapper<T> config)
+        Wrapper<T> config)
     {
         var group = UIFactory.CreateHorizontalGroup(parent, $"{name}__HorizontalGroup", true, false, true, true, 4);
         
-        var displayText = UIFactory.CreateLabel(group, $"{name}__Label", $"{config.GetDefinition().Key}: {config.GetBoxedValue()}");
+        var displayText = UIFactory.CreateLabel(group, $"{name}__Label", $"{config.Definition.Key}: {config.BoxedValue}");
         var input = UIFactory.CreateInputField(group, $"{name}__InputField", placeHolder);
         var defaultButton = UIFactory.CreateButton(group, $"{name}__Button", "Default", normalColor: null);
         UIFactory.SetLayoutElement(defaultButton.GameObject, minHeight: 20);
         
-        input.Text = config.GetBoxedValue().ToString();
+        input.Text = config.BoxedValue.ToString();
         
         
         input.Component.GetOnEndEdit().AddListener(value =>
         {
-            var configType = config.GetSettingType();
+            var configType = config.SettingType;
             if (configType == typeof(int) && int.TryParse(value, out var @int))
-                config.SetBoxedValue(@int);
+                config.BoxedValue = @int;
             else if (configType == typeof(float) && float.TryParse(value, out var @float))
-                config.SetBoxedValue(@float);
+                config.BoxedValue = @float;
             else if (configType == typeof(string))
-                config.SetBoxedValue(value);
+                config.BoxedValue = value;
         });
 
-        defaultButton.OnClick += () =>
+        defaultButton.OnClick += config.ResetValue;
+
+        config.OnSettingChanged += (_, val) =>
         {
-            config.SetBoxedValue(config.GetDefaultValue());
-        };
-        
-        config.OnBoxedValueChange += val =>
-        {
-            input.Text = val.ToString();
-            displayText.text = $"{config.GetDefinition().Key}: {val}";
+            input.Text = val.BoxedValue.ToString();
+            displayText.text = $"{config.Definition.Key}: {val.BoxedValue}";
         };
     
         return input;

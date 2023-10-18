@@ -48,7 +48,7 @@ namespace Lunistice_DebugConsole.UI
             AddTab<SettingsTab>(tabGroup, "Settings", new object[] {ContentRoot});
             
             SetTab(0);
-            if (Plugin.ShowOnStart.GetValue()) Show();
+            if (Plugin.ShowOnStart.Value) Show();
             else Hide();
         }
 
@@ -124,50 +124,50 @@ namespace Lunistice_DebugConsole.UI
 
         private static void OnPlayerLoad(Timer.Character character)
         {
-            Player.Gravity = new Vector3(Plugin.GravityX.GetValue(), Plugin.GravityY.GetValue(),
-                Plugin.GravityZ.GetValue());
+            Player.Gravity = new Vector3(Plugin.GravityX.Value, Plugin.GravityY.Value,
+                Plugin.GravityZ.Value);
             Player.GravityReset = Player.Gravity;
-            Time.timeScale = Plugin.TimeScale.GetValue();
+            Time.timeScale = Plugin.TimeScale.Value;
             switch (character)
             {
                 case Timer.Character.Hana: 
-                    Player.MaxLife          = Plugin.HanaMaxLife.GetValue();
-                    Player.SprintSpeed      = Plugin.HanaSprintSpeed.GetValue(); 
-                    Player.RunSpeed         = Plugin.HanaRunSpeed.GetValue();
-                    Player.TurboSpeed       = Plugin.HanaTurboSpeed.GetValue();
-                    Player.JumpHeight       = Plugin.HanaJumpHeight.GetValue();
-                    Player.AttackJumpHeight = Plugin.HanaAttackJump.GetValue();
-                    Player.MaxDoubleJumps   = Plugin.HanaMaxDoubleJumps.GetValue();
-                    Player.CoyoteTime       = Plugin.HanaCoyoteTime.GetValue();
-                    Player.Friction         = Plugin.HanaFriction.GetValue();
-                    Player.AirFriction      = Plugin.HanaAirFriction.GetValue();
-                    Player.Acceleration     = Plugin.HanaAcceleration.GetValue();
+                    Player.MaxLife          = Plugin.HanaMaxLife.Value;
+                    Player.SprintSpeed      = Plugin.HanaSprintSpeed.Value; 
+                    Player.RunSpeed         = Plugin.HanaRunSpeed.Value;
+                    Player.TurboSpeed       = Plugin.HanaTurboSpeed.Value;
+                    Player.JumpHeight       = Plugin.HanaJumpHeight.Value;
+                    Player.AttackJumpHeight = Plugin.HanaAttackJump.Value;
+                    Player.MaxDoubleJumps   = Plugin.HanaMaxDoubleJumps.Value;
+                    Player.CoyoteTime       = Plugin.HanaCoyoteTime.Value;
+                    Player.Friction         = Plugin.HanaFriction.Value;
+                    Player.AirFriction      = Plugin.HanaAirFriction.Value;
+                    Player.Acceleration     = Plugin.HanaAcceleration.Value;
                     break;
                 case Timer.Character.Toree:
-                    Player.MaxLife          = Plugin.ToreeMaxLife.GetValue();
-                    Player.SprintSpeed      = Plugin.ToreeSprintSpeed.GetValue(); 
-                    Player.RunSpeed         = Plugin.ToreeRunSpeed.GetValue();
-                    Player.TurboSpeed       = Plugin.ToreeTurboSpeed.GetValue();
-                    Player.JumpHeight       = Plugin.ToreeJumpHeight.GetValue();
-                    Player.AttackJumpHeight = Plugin.ToreeAttackJump.GetValue();
-                    Player.MaxDoubleJumps   = Plugin.ToreeMaxDoubleJumps.GetValue();
-                    Player.CoyoteTime       = Plugin.ToreeCoyoteTime.GetValue();
-                    Player.Friction         = Plugin.ToreeFriction.GetValue();
-                    Player.AirFriction      = Plugin.ToreeAirFriction.GetValue();
-                    Player.Acceleration     = Plugin.ToreeAcceleration.GetValue();
+                    Player.MaxLife          = Plugin.ToreeMaxLife.Value;
+                    Player.SprintSpeed      = Plugin.ToreeSprintSpeed.Value; 
+                    Player.RunSpeed         = Plugin.ToreeRunSpeed.Value;
+                    Player.TurboSpeed       = Plugin.ToreeTurboSpeed.Value;
+                    Player.JumpHeight       = Plugin.ToreeJumpHeight.Value;
+                    Player.AttackJumpHeight = Plugin.ToreeAttackJump.Value;
+                    Player.MaxDoubleJumps   = Plugin.ToreeMaxDoubleJumps.Value;
+                    Player.CoyoteTime       = Plugin.ToreeCoyoteTime.Value;
+                    Player.Friction         = Plugin.ToreeFriction.Value;
+                    Player.AirFriction      = Plugin.ToreeAirFriction.Value;
+                    Player.Acceleration     = Plugin.ToreeAcceleration.Value;
                     break;
                 case Timer.Character.Toukie:
-                    Player.MaxLife          = Plugin.ToukieMaxLife.GetValue();
-                    Player.SprintSpeed      = Plugin.ToukieSprintSpeed.GetValue(); 
-                    Player.RunSpeed         = Plugin.ToukieRunSpeed.GetValue();
-                    Player.TurboSpeed       = Plugin.ToukieTurboSpeed.GetValue();
-                    Player.JumpHeight       = Plugin.ToukieJumpHeight.GetValue();
-                    Player.AttackJumpHeight = Plugin.ToukieAttackJump.GetValue();
-                    Player.MaxDoubleJumps   = Plugin.ToukieMaxDoubleJumps.GetValue();
-                    Player.CoyoteTime       = Plugin.ToukieCoyoteTime.GetValue();
-                    Player.Friction         = Plugin.ToukieFriction.GetValue();
-                    Player.AirFriction      = Plugin.ToukieAirFriction.GetValue();
-                    Player.Acceleration     = Plugin.ToukieAcceleration.GetValue();
+                    Player.MaxLife          = Plugin.ToukieMaxLife.Value;
+                    Player.SprintSpeed      = Plugin.ToukieSprintSpeed.Value; 
+                    Player.RunSpeed         = Plugin.ToukieRunSpeed.Value;
+                    Player.TurboSpeed       = Plugin.ToukieTurboSpeed.Value;
+                    Player.JumpHeight       = Plugin.ToukieJumpHeight.Value;
+                    Player.AttackJumpHeight = Plugin.ToukieAttackJump.Value;
+                    Player.MaxDoubleJumps   = Plugin.ToukieMaxDoubleJumps.Value;
+                    Player.CoyoteTime       = Plugin.ToukieCoyoteTime.Value;
+                    Player.Friction         = Plugin.ToukieFriction.Value;
+                    Player.AirFriction      = Plugin.ToukieAirFriction.Value;
+                    Player.Acceleration     = Plugin.ToukieAcceleration.Value;
                     break;
             }
         }

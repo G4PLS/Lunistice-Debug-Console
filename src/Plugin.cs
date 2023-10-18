@@ -4,6 +4,7 @@ using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
 using Lunistice_DebugConsole.UI;
 using Luna;
+using Luna.Config;
 using UnityEngine;
 using UniverseLib;
 using UniverseLib.Config;
@@ -29,48 +30,48 @@ public class Plugin : BasePlugin
     public static readonly ConfigFile ToukieSettings = new(Path.Combine(Paths.ConfigPath, Name, "Toukie.cfg"), true);
     
     #region Config Definition
-    public static ConfigWrapper<bool> ShowOnStart { get; private set; }
+
+    public static Wrapper<bool> ShowOnStart { get; private set; }
+    public static Wrapper<float> TimeScale { get; private set; }
+    public static Wrapper<float> GravityX { get; private set; }
+    public static Wrapper<float> GravityY { get; private set; }
+    public static Wrapper<float> GravityZ { get; private set; }
     
-    public static ConfigWrapper<float> TimeScale { get; private set; }
-    public static ConfigWrapper<float> GravityX { get; private set; }
-    public static ConfigWrapper<float> GravityY { get; private set; }
-    public static ConfigWrapper<float> GravityZ { get; private set; }
+    public static Wrapper<int>   HanaMaxLife { get; private set; }
+    public static Wrapper<float> HanaSprintSpeed { get; private set; }
+    public static Wrapper<float> HanaRunSpeed { get; private set; }
+    public static Wrapper<float> HanaTurboSpeed { get; private set; }
+    public static Wrapper<float> HanaJumpHeight { get; private set; }
+    public static Wrapper<float> HanaAttackJump { get; private set; }
+    public static Wrapper<int>   HanaMaxDoubleJumps { get; private set; }
+    public static Wrapper<float> HanaCoyoteTime { get; private set; }
+    public static Wrapper<float> HanaFriction { get; private set; }
+    public static Wrapper<float> HanaAirFriction { get; private set; }
+    public static Wrapper<float> HanaAcceleration { get; private set; }
     
-    public static ConfigWrapper<int>   HanaMaxLife { get; private set; }
-    public static ConfigWrapper<float> HanaSprintSpeed { get; private set; }
-    public static ConfigWrapper<float> HanaRunSpeed { get; private set; }
-    public static ConfigWrapper<float> HanaTurboSpeed { get; private set; }
-    public static ConfigWrapper<float> HanaJumpHeight { get; private set; }
-    public static ConfigWrapper<float> HanaAttackJump { get; private set; }
-    public static ConfigWrapper<int>   HanaMaxDoubleJumps { get; private set; }
-    public static ConfigWrapper<float> HanaCoyoteTime { get; private set; }
-    public static ConfigWrapper<float> HanaFriction { get; private set; }
-    public static ConfigWrapper<float> HanaAirFriction { get; private set; }
-    public static ConfigWrapper<float> HanaAcceleration { get; private set; }
+    public static Wrapper<int> ToreeMaxLife { get; private set; }
+    public static Wrapper<float> ToreeSprintSpeed { get; private set; }
+    public static Wrapper<float> ToreeRunSpeed { get; private set; }
+    public static Wrapper<float> ToreeTurboSpeed { get; private set; }
+    public static Wrapper<float> ToreeJumpHeight { get; private set; }
+    public static Wrapper<float> ToreeAttackJump { get; private set; }
+    public static Wrapper<int> ToreeMaxDoubleJumps { get; private set; }
+    public static Wrapper<float> ToreeCoyoteTime { get; private set; }
+    public static Wrapper<float> ToreeFriction { get; private set; }
+    public static Wrapper<float> ToreeAirFriction { get; private set; }
+    public static Wrapper<float> ToreeAcceleration { get; private set; }
     
-    public static ConfigWrapper<int> ToreeMaxLife { get; private set; }
-    public static ConfigWrapper<float> ToreeSprintSpeed { get; private set; }
-    public static ConfigWrapper<float> ToreeRunSpeed { get; private set; }
-    public static ConfigWrapper<float> ToreeTurboSpeed { get; private set; }
-    public static ConfigWrapper<float> ToreeJumpHeight { get; private set; }
-    public static ConfigWrapper<float> ToreeAttackJump { get; private set; }
-    public static ConfigWrapper<int> ToreeMaxDoubleJumps { get; private set; }
-    public static ConfigWrapper<float> ToreeCoyoteTime { get; private set; }
-    public static ConfigWrapper<float> ToreeFriction { get; private set; }
-    public static ConfigWrapper<float> ToreeAirFriction { get; private set; }
-    public static ConfigWrapper<float> ToreeAcceleration { get; private set; }
-    
-    public static ConfigWrapper<int> ToukieMaxLife { get; private set; }
-    public static ConfigWrapper<float> ToukieSprintSpeed { get; private set; }
-    public static ConfigWrapper<float> ToukieRunSpeed { get; private set; }
-    public static ConfigWrapper<float> ToukieTurboSpeed { get; private set; }
-    public static ConfigWrapper<float> ToukieJumpHeight { get; private set; }
-    public static ConfigWrapper<float> ToukieAttackJump { get; private set; }
-    public static ConfigWrapper<int> ToukieMaxDoubleJumps { get; private set; }
-    public static ConfigWrapper<float> ToukieCoyoteTime { get; private set; }
-    public static ConfigWrapper<float> ToukieFriction { get; private set; }
-    public static ConfigWrapper<float> ToukieAirFriction { get; private set; }
-    public static ConfigWrapper<float> ToukieAcceleration { get; private set; }
+    public static Wrapper<int> ToukieMaxLife { get; private set; }
+    public static Wrapper<float> ToukieSprintSpeed { get; private set; }
+    public static Wrapper<float> ToukieRunSpeed { get; private set; }
+    public static Wrapper<float> ToukieTurboSpeed { get; private set; }
+    public static Wrapper<float> ToukieJumpHeight { get; private set; }
+    public static Wrapper<float> ToukieAttackJump { get; private set; }
+    public static Wrapper<int> ToukieMaxDoubleJumps { get; private set; }
+    public static Wrapper<float> ToukieCoyoteTime { get; private set; }
+    public static Wrapper<float> ToukieFriction { get; private set; }
+    public static Wrapper<float> ToukieAirFriction { get; private set; }
+    public static Wrapper<float> ToukieAcceleration { get; private set; }
 
     #endregion
     
@@ -81,31 +82,31 @@ public class Plugin : BasePlugin
 
         #region Config Declaration
 
-        ShowOnStart = new ConfigWrapper<bool>(PluginSettings, "Plugin", "Show On Start", true, "", null);
+        ShowOnStart = new Wrapper<bool>(PluginSettings, "Plugin", "Show On Start", true, "", null);
         
         #region Game
 
-        TimeScale = new ConfigWrapper<float>(GameSettings, "Game", "Time Scale", 1f, "The Time Scale of the Game",
-            val => Time.timeScale = val);
-        GravityX = new ConfigWrapper<float>(GameSettings, "Game", "Gravity X", 0f, "Gravity on the X Axis",
-            val =>
+        TimeScale = new Wrapper<float>(GameSettings, "Game", "Time Scale", 1f, "The Time Scale of the Game",
+            (_, val) => Time.timeScale = val.BoxedValue.TryCast<float>());
+        GravityX = new Wrapper<float>(GameSettings, "Game", "Gravity X", 0f, "Gravity on the X Axis",
+            (_, val) =>
             {
                 Player.Gravity =
-                    new Vector3(val, Player.Gravity.y, Player.Gravity.z);
+                    new Vector3(val.BoxedValue.TryCast<float>(), Player.Gravity.y, Player.Gravity.z);
                 Player.GravityReset = Player.Gravity;
             });
-        GravityY = new ConfigWrapper<float>(GameSettings, "Game", "Gravity Y", 14f, "Gravity on the Y Axis",
-            val =>
+        GravityY = new Wrapper<float>(GameSettings, "Game", "Gravity Y", 14f, "Gravity on the Y Axis",
+            (_, val) =>
             {
                 Player.Gravity =
-                    new Vector3(Player.Gravity.x, val, Player.Gravity.z);
+                    new Vector3(Player.Gravity.x, val.BoxedValue.TryCast<float>(), Player.Gravity.z);
                 Player.GravityReset = Player.Gravity;
             });
-        GravityZ = new ConfigWrapper<float>(GameSettings, "Game", "Gravity Z", 0f, "Gravity on the Z Axis",
-            val =>
+        GravityZ = new Wrapper<float>(GameSettings, "Game", "Gravity Z", 0f, "Gravity on the Z Axis",
+            (_, val) =>
             {
                 Player.Gravity =
-                    new Vector3(Player.Gravity.x, Player.Gravity.y, val);
+                    new Vector3(Player.Gravity.x, Player.Gravity.y, val.BoxedValue.TryCast<float>());
                 Player.GravityReset = Player.Gravity;
             });
 
@@ -113,180 +114,180 @@ public class Plugin : BasePlugin
 
         #region Hana
 
-        HanaMaxLife = new ConfigWrapper<int>(HanaSettings, "Player", "Max Life", 3, "", val =>
+        HanaMaxLife = new Wrapper<int>(HanaSettings, "Player", "Max Life", 3, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.MaxLife = val;
+                Player.MaxLife = val.BoxedValue.TryCast<int>();
         });
-        HanaSprintSpeed = new ConfigWrapper<float>(HanaSettings, "Player", "Sprint Speed", 5f, "", val =>
+        HanaSprintSpeed = new Wrapper<float>(HanaSettings, "Player", "Sprint Speed", 5f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.SprintSpeed = val;
+                Player.SprintSpeed = val.BoxedValue.TryCast<float>();
         });
-        HanaRunSpeed = new ConfigWrapper<float>(HanaSettings, "Player", "Run Speed", 3f, "", val =>
+        HanaRunSpeed = new Wrapper<float>(HanaSettings, "Player", "Run Speed", 3f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.RunSpeed = val;
+                Player.RunSpeed = val.BoxedValue.TryCast<float>();
         });
-        HanaTurboSpeed = new ConfigWrapper<float>(HanaSettings, "Player", "Turbo Speed", 9f, "", val =>
+        HanaTurboSpeed = new Wrapper<float>(HanaSettings, "Player", "Turbo Speed", 9f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.TurboSpeed = val;
+                Player.TurboSpeed = val.BoxedValue.TryCast<float>();
         });
-        HanaJumpHeight = new ConfigWrapper<float>(HanaSettings, "Hana", "Jump Height", 5f, "", val =>
+        HanaJumpHeight = new Wrapper<float>(HanaSettings, "Hana", "Jump Height", 5f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.JumpHeight = val;
+                Player.JumpHeight = val.BoxedValue.TryCast<float>();
         });
-        HanaAttackJump = new ConfigWrapper<float>(HanaSettings, "Player", "Attack Jump", 3f, "", val =>
+        HanaAttackJump = new Wrapper<float>(HanaSettings, "Player", "Attack Jump", 3f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.AttackJumpHeight = val;
+                Player.AttackJumpHeight = val.BoxedValue.TryCast<float>();
         });
-        HanaMaxDoubleJumps = new ConfigWrapper<int>(HanaSettings, "Player", "Max Double Jumps", 1, "", val =>
+        HanaMaxDoubleJumps = new Wrapper<int>(HanaSettings, "Player", "Max Double Jumps", 1, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.MaxDoubleJumps = val;
+                Player.MaxDoubleJumps = val.BoxedValue.TryCast<int>();
         });
-        HanaCoyoteTime = new ConfigWrapper<float>(HanaSettings, "Player", "Coyote Time", 0.2f, "", val =>
+        HanaCoyoteTime = new Wrapper<float>(HanaSettings, "Player", "Coyote Time", 0.2f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.CoyoteTime = val;
+                Player.CoyoteTime = val.BoxedValue.TryCast<float>();
         });
-        HanaFriction = new ConfigWrapper<float>(HanaSettings, "Player", "Friction", 20f, "", val =>
+        HanaFriction = new Wrapper<float>(HanaSettings, "Player", "Friction", 20f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.Friction = val;
+                Player.Friction = val.BoxedValue.TryCast<float>();
         });
-        HanaAirFriction = new ConfigWrapper<float>(HanaSettings, "Player", "Air Friction", 8f, "", val =>
+        HanaAirFriction = new Wrapper<float>(HanaSettings, "Player", "Air Friction", 8f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.AirFriction = val;
+                Player.AirFriction = val.BoxedValue.TryCast<float>();
         });
-        HanaAcceleration = new ConfigWrapper<float>(HanaSettings, "Player", "Acceleration", 14f, "", val =>
+        HanaAcceleration = new Wrapper<float>(HanaSettings, "Player", "Acceleration", 14f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Hana)
-                Player.Acceleration = val;
+                Player.Acceleration = val.BoxedValue.TryCast<float>();
         });
 
         #endregion
 
         #region Toree
 
-        ToreeMaxLife = new ConfigWrapper<int>(ToreeSettings, "Player", "Max Life", 3, "", val =>
+        ToreeMaxLife = new Wrapper<int>(ToreeSettings, "Player", "Max Life", 1, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.MaxLife = val;
+                Player.MaxLife = val.BoxedValue.TryCast<int>();
         });
-        ToreeSprintSpeed = new ConfigWrapper<float>(ToreeSettings, "Player", "Sprint Speed", 5f, "", val =>
+        ToreeSprintSpeed = new Wrapper<float>(ToreeSettings, "Player", "Sprint Speed", 6f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.SprintSpeed = val;
+                Player.SprintSpeed = val.BoxedValue.TryCast<float>();
         });
-        ToreeRunSpeed = new ConfigWrapper<float>(ToreeSettings, "Player", "Run Speed", 3f, "", val =>
+        ToreeRunSpeed = new Wrapper<float>(ToreeSettings, "Player", "Run Speed", 4f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.RunSpeed = val;
+                Player.RunSpeed = val.BoxedValue.TryCast<float>();
         });
-        ToreeTurboSpeed = new ConfigWrapper<float>(ToreeSettings, "Player", "Turbo Speed", 9f, "", val =>
+        ToreeTurboSpeed = new Wrapper<float>(ToreeSettings, "Player", "Turbo Speed", 10f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.TurboSpeed = val;
+                Player.TurboSpeed = val.BoxedValue.TryCast<float>();
         });
-        ToreeJumpHeight = new ConfigWrapper<float>(ToreeSettings, "Player", "Jump Height", 5f, "", val =>
+        ToreeJumpHeight = new Wrapper<float>(ToreeSettings, "Player", "Jump Height", 5f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.JumpHeight = val;
+                Player.JumpHeight = val.BoxedValue.TryCast<float>();
         });
-        ToreeAttackJump = new ConfigWrapper<float>(ToreeSettings, "Player", "Attack Jump", 3f, "", val =>
+        ToreeAttackJump = new Wrapper<float>(ToreeSettings, "Player", "Attack Jump", 3f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.AttackJumpHeight = val;
+                Player.AttackJumpHeight = val.BoxedValue.TryCast<float>();
         });
-        ToreeMaxDoubleJumps = new ConfigWrapper<int>(ToreeSettings, "Player", "Max Double Jumps", 1, "", val =>
+        ToreeMaxDoubleJumps = new Wrapper<int>(ToreeSettings, "Player", "Max Double Jumps", 1, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.MaxDoubleJumps = val;
+                Player.MaxDoubleJumps = val.BoxedValue.TryCast<int>();
         });
-        ToreeCoyoteTime = new ConfigWrapper<float>(ToreeSettings, "Player", "Coyote Time", 0.2f, "", val =>
+        ToreeCoyoteTime = new Wrapper<float>(ToreeSettings, "Player", "Coyote Time", 0.2f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.CoyoteTime = val;
+                Player.CoyoteTime = val.BoxedValue.TryCast<float>();
         });
-        ToreeFriction = new ConfigWrapper<float>(ToreeSettings, "Player", "Friction", 20f, "", val =>
+        ToreeFriction = new Wrapper<float>(ToreeSettings, "Player", "Friction", 20f, "",(_, val)  =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.Friction = val;
+                Player.Friction = val.BoxedValue.TryCast<float>();
         });
-        ToreeAirFriction = new ConfigWrapper<float>(ToreeSettings, "Player", "Air Friction", 8f, "", val =>
+        ToreeAirFriction = new Wrapper<float>(ToreeSettings, "Player", "Air Friction", 8f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.AirFriction = val;
+                Player.AirFriction = val.BoxedValue.TryCast<float>();
         });
-        ToreeAcceleration = new ConfigWrapper<float>(ToreeSettings, "Player", "Acceleration", 14f, "", val =>
+        ToreeAcceleration = new Wrapper<float>(ToreeSettings, "Player", "Acceleration", 18f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toree)
-                Player.Acceleration = val;
+                Player.Acceleration = val.BoxedValue.TryCast<float>();
         });
 
         #endregion
 
         #region Toukie
 
-        ToukieMaxLife = new ConfigWrapper<int>(ToukieSettings, "Player", "Max Life", 3, "", val =>
+        ToukieMaxLife = new Wrapper<int>(ToukieSettings, "Player", "Max Life", 2, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.MaxLife = val;
+                Player.MaxLife = val.BoxedValue.TryCast<int>();
         });
-        ToukieSprintSpeed = new ConfigWrapper<float>(ToukieSettings, "Player", "Sprint Speed", 5f, "", val =>
+        ToukieSprintSpeed = new Wrapper<float>(ToukieSettings, "Player", "Sprint Speed", 5f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.SprintSpeed = val;
+                Player.SprintSpeed = val.BoxedValue.TryCast<float>();
         });
-        ToukieRunSpeed = new ConfigWrapper<float>(ToukieSettings, "Player", "Run Speed", 3f, "", val =>
+        ToukieRunSpeed = new Wrapper<float>(ToukieSettings, "Player", "Run Speed", 3f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.RunSpeed = val;
+                Player.RunSpeed = val.BoxedValue.TryCast<float>();
         });
-        ToukieTurboSpeed = new ConfigWrapper<float>(ToukieSettings, "Player", "Turbo Speed", 9f, "", val =>
+        ToukieTurboSpeed = new Wrapper<float>(ToukieSettings, "Player", "Turbo Speed", 9f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.TurboSpeed = val;
+                Player.TurboSpeed = val.BoxedValue.TryCast<float>();
         });
-        ToukieJumpHeight = new ConfigWrapper<float>(ToukieSettings, "Player", "Jump Height", 5f, "", val =>
+        ToukieJumpHeight = new Wrapper<float>(ToukieSettings, "Player", "Jump Height", 4f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.JumpHeight = val;
+                Player.JumpHeight = val.BoxedValue.TryCast<float>();
         });
-        ToukieAttackJump = new ConfigWrapper<float>(ToukieSettings, "Player", "Attack Jump", 3f, "", val =>
+        ToukieAttackJump = new Wrapper<float>(ToukieSettings, "Player", "Attack Jump", 2f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.AttackJumpHeight = val;
+                Player.AttackJumpHeight = val.BoxedValue.TryCast<float>();
         });
-        ToukieMaxDoubleJumps = new ConfigWrapper<int>(ToukieSettings, "Player", "Max Double Jumps", 1, "", val =>
+        ToukieMaxDoubleJumps = new Wrapper<int>(ToukieSettings, "Player", "Max Double Jumps", 3, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.MaxDoubleJumps = val;
+                Player.MaxDoubleJumps = val.BoxedValue.TryCast<int>();
         });
-        ToukieCoyoteTime = new ConfigWrapper<float>(ToukieSettings, "Player", "Coyote Time", 0.2f, "", val =>
+        ToukieCoyoteTime = new Wrapper<float>(ToukieSettings, "Player", "Coyote Time", 0.2f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.CoyoteTime = val;
+                Player.CoyoteTime = val.BoxedValue.TryCast<float>();
         });
-        ToukieFriction = new ConfigWrapper<float>(ToukieSettings, "Player", "Friction", 20f, "", val =>
+        ToukieFriction = new Wrapper<float>(ToukieSettings, "Player", "Friction", 20f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.Friction = val;
+                Player.Friction = val.BoxedValue.TryCast<float>();
         });
-        ToukieAirFriction = new ConfigWrapper<float>(ToukieSettings, "Player", "Air Friction", 8f, "", val =>
+        ToukieAirFriction = new Wrapper<float>(ToukieSettings, "Player", "Air Friction", 6f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.AirFriction = val;
+                Player.AirFriction = val.BoxedValue.TryCast<float>();
         });
-        ToukieAcceleration = new ConfigWrapper<float>(ToukieSettings, "Player", "Acceleration", 14f, "", val =>
+        ToukieAcceleration = new Wrapper<float>(ToukieSettings, "Player", "Acceleration", 14f, "", (_, val) =>
         {
             if(LevelTimer.Character == Timer.Character.Toukie)
-                Player.Acceleration = val;
+                Player.Acceleration = val.BoxedValue.TryCast<float>();
         });
 
 #endregion
@@ -326,9 +327,9 @@ public class Plugin : BasePlugin
 
         if(Game.IsPaused()){}
         else if (Player.CurrentFreezeFrameTime != 0 && !_debugMenu.Enabled)
-            Time.timeScale = 0.01f * TimeScale.GetValue();
+            Time.timeScale = 0.01f * TimeScale.Value;
         else
-            Time.timeScale = TimeScale.GetValue();
+            Time.timeScale = TimeScale.Value;
     }
 
     private void LogHandler(string message, LogType type)

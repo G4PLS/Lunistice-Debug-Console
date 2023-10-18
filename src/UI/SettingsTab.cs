@@ -19,11 +19,11 @@ public class SettingsTab : TabPage
 
         UIFactory.CreateToggle(_uiRoot, "ShowOnStart__Toggle", out var toggle, out var text);
 
-        toggle.isOn = Plugin.ShowOnStart.GetValue();
+        toggle.isOn = Plugin.ShowOnStart.Value;
         
         toggle.onValueChanged.AddListener(var =>
         {
-            Plugin.ShowOnStart.SetValue(var);
+            Plugin.ShowOnStart.Value = var;
         });
 
         text.text = "Show on Start";
